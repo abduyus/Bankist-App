@@ -231,6 +231,16 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogoutTimer = function( {
+  // Set time to 5 minutes
+
+  // Call the timer every second
+
+  // In each call, print remaining time to UI
+
+  // When 0 seconds, stop timer and log out user
+})
+
 ///////////////////////////////////////
 // Event handlers
 let currentAccount;
@@ -259,19 +269,22 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
-    const now = new Date();
-    const options = {
-      hour: 'numeric',
-      minute: 'numeric',
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-    };
-    // const locale = navigator.language;
-    labelDate.textContent = new Intl.DateTimeFormat(
-      currentAccount.locale,
-      options
-    ).format(now);
+    setInterval(function () {
+      const now = new Date();
+      const options = {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+      };
+      // const locale = navigator.language;
+      labelDate.textContent = new Intl.DateTimeFormat(
+        currentAccount.locale,
+        options
+      ).format(now);
+    }, 1000);
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
@@ -314,14 +327,16 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
 
-    // Add the current date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add the current date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500);
   }
   inputLoanAmount.value = '';
 });
@@ -360,3 +375,14 @@ btnSort.addEventListener('click', function (e) {
 /////////////////////////////////////////////////
 // LECTURES
 // console.log(new Date(account1.movementsDates[0]));
+
+// setInterval
+// setInterval(() => {
+//   const now = new Date();
+//   const time = new Intl.DateTimeFormat('en-GB', {
+//     hour: 'numeric',
+//     minute: 'numeric',
+//     second: 'numeric',
+//   }).format(now);
+//   console.log(time);
+// }, 1000);
